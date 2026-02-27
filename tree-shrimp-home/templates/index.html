@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树大虾的家 🦐</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-cyan-100 min-h-screen font-sans">
+    <!-- 顶部导航 -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-3xl">🦐</span>
+                <h1 class="text-xl font-bold text-gray-800">树大虾的家</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="status-badge" class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    🟢 在线
+                </span>
+                <span id="mood-badge" class="px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                    😊 开心
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- 左侧：树大虾形象区 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                    <!-- 树大虾形象 -->
+                    <div class="relative mb-4">
+                        <div class="w-40 h-40 mx-auto bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-8xl shadow-xl animate-float">
+                            🦐
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl shadow-lg">
+                            💻
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">树大虾</h2>
+                    <p class="text-gray-600 mb-4">你的AI助手伙伴</p>
+                    
+                    <!-- 当前任务 -->
+                    <div id="current-task" class="bg-blue-50 rounded-xl p-4 mb-4 hidden">
+                        <div class="flex items-center space-x-2 text-blue-700">
+                            <span class="animate-spin">⏳</span>
+                            <span class="font-medium">正在工作...</span>
+                        </div>
+                        <p id="task-title" class="text-sm text-blue-600 mt-1"></p>
+                    </div>
+                    
+                    <!-- 技能等级 -->
+                    <div class="space-y-3 text-left">
+                        <h3 class="font-semibold text-gray-700">技能等级</h3>
+                        <div id="skills-container">
+                            <!-- 动态加载 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 快速统计 -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mt-4">
+                    <h3 class="font-semibold text-gray-700 mb-4">今日统计</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600" id="task-count">0</div>
+                            <div class="text-sm text-gray-500">完成任务</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600" id="msg-count">0</div>
+                            <div class="text-sm text-gray-500">对话次数</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中间和右侧：聊天和工作区 -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- 聊天区域 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-cyan-500 px-6 py-4">
+                        <h3 class="text-white font-semibold flex items-center space-x-2">
+                            <span>💬</span>
+                            <span>和树大虾聊天</span>
+                        </h3>
+                    </div>
+                    
+                    <!-- 聊天记录 -->
+                    <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-4">
+                        <!-- 欢迎消息 -->
+                        <div class="flex items-start space-x-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                                🦐
+                            </div>
+                            <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                                <p class="text-gray-800">嗨！我是树大虾 🦐</p>
+                                <p class="text-gray-800 mt-1">我会写代码、查资料、监控信息，24小时在线陪伴主人！有什么可以帮你的吗？</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 输入框 -->
+                    <div class="border-t border-gray-200 p-4">
+                        <div class="flex space-x-2">
+                            <input 
+                                type="text" 
+                                id="chat-input" 
+                                placeholder="输入消息..." 
+                                class="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                onkeypress="if(event.key==='Enter') sendMessage()"
+                            >
+                            <button 
+                                onclick="sendMessage()" 
+                                class="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:shadow-lg transition-shadow font-medium"
+                            >
+                                发送
+                            </button>
+                        </div>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <button onclick="quickSend('帮我写个Python脚本')" class="text-sm px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 transition">🐍 写代码</button>
+                            <button onclick="quickSend('查一下最新资讯')" class="text-sm px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 transition">🔍 查资料</button>
+                            <button onclick="quickSend('创建一个新任务')" class="text-sm px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200 transition">📋 建任务</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工作日志 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 flex justify-between items-center">
+                        <h3 class="text-white font-semibold flex items-center space-x-2">
+                            <span>📋</span>
+                            <span>工作日志</span>
+                        </h3>
+                        <button onclick="createTask()" class="text-white/80 hover:text-white text-sm underline">
+                            + 新建任务
+                        </button>
+                    </div>
+                    
+                    <div id="logs-container" class="max-h-64 overflow-y-auto p-4 space-y-3">
+                        <!-- 动态加载 -->
+                        <div class="text-center text-gray-400 py-8">
+                            暂无任务，创建一个吧！
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="mt-12 py-6 text-center text-gray-500 text-sm">
+        <p>🦐 树大虾 - 你的AI助手伙伴</p>
+        <p class="mt-1">24小时在线 · 随时为你服务</p>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
