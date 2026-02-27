@@ -79,13 +79,29 @@ def publish_long_text(title: str, content: str, headless: bool = True) -> dict:
         try:
             print('🔍 访问创作者中心...')
             page.goto('https://creator.xiaohongshu.com/publish/publish')
-            sleep(3)
+            sleep(5)  # 增加等待时间
 
             print('📝 进入长文编辑...')
-            page.click('text=写长文')
+            # 等待页面完全加载
+            page.wait_for_load_state('networkidle')
             sleep(2)
-            page.click('text=新的创作')
-            sleep(4)
+            
+            # 尝试点击"写长文"
+            try:
+                page.click('text=写长文', timeout=10000)
+            except:
+                # 备选：尝试其他选择器
+                page.click('button:has-text("写长文")', timeout=10000)
+            
+            sleep(3)
+            
+            # 点击"新的创作"
+            try:
+                page.click('text=新的创作', timeout=10000)
+            except:
+                page.click('button:has-text("新的创作")', timeout=10000)
+            
+            sleep(5)  # 增加等待时间
 
             print('📝 填写标题和内容...')
             page.fill('textarea[placeholder="输入标题"]', title)
