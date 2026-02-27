@@ -158,4 +158,10 @@ if __name__ == '__main__':
     
     print("🦐 树大虾主页启动中...")
     print("访问 http://localhost:5000")
-    app.run(debug=True, port=5000)
+    print("或 http://127.0.0.1:5000")
+    app.run(debug=True, host='0.0.0.0', port=5000)
+else:
+    # Vercel 部署时自动加载历史
+    load_history()
+    save_thread = Thread(target=auto_save, daemon=True)
+    save_thread.start()
