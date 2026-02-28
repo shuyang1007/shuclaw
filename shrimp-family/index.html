@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树大虾家族 🦐</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        body { font-family: 'Noto Sans SC', sans-serif; }
+        
+        .agent-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .agent-card.active {
+            ring: 4px;
+            transform: scale(1.02);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        .skill-bar {
+            background: linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%);
+            border-radius: 999px;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <span class="text-4xl">🦐</span>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">树大虾家族</h1>
+                        <p class="text-sm text-gray-500">选择你的AI伙伴</p>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-500">
+                    <span id="active-agent-name">当前：树大虾</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Agent 选择区 -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- 树大虾·原型 -->
+            <div class="agent-card active bg-gradient-to-br from-blue-50 to-cyan-100 rounded-2xl p-6" 
+                 onclick="selectAgent('shrimp-coder')"
+                 id="card-shrimp-coder">
+                <div class="text-center mb-4">
+                    <div class="text-8xl mb-2 animate-float">🦐</div>
+                    <div class="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded-full">💻</div>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-1">树大虾</h3>
+                <p class="text-center text-gray-600 text-sm mb-4">代码工程师</p>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-xs">
+                        <span>编程</span>
+                        <span>95</span>
+                    </div>
+                    <div class="w-full bg-white rounded-full h-2">
+                        <div class="skill-bar h-2 rounded-full" style="width: 95%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between text-xs">
+                        <span>自动化</span>
+                        <span>90</span>
+                    </div>
+                    <div class="w-full bg-white rounded-full h-2">
+                        <div class="skill-bar h-2 rounded-full" style="width: 90%"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <span class="text-xs bg-white px-3 py-1 rounded-full text-gray-600">靠谱 · 细致 · 强迫症</span>
+                </div>
+                
+                <p class="text-center text-sm text-gray-500 mt-3 italic">"让我试试"</p>
+            </div>
+
+            <!-- 树大虾·策士 -->
+            <div class="agent-card bg-gradient-to-br from-slate-50 to-blue-100 rounded-2xl p-6"
+                 onclick="selectAgent('shrimp-strategist')"
+                 id="card-shrimp-strategist">
+                <div class="text-center mb-4">
+                    <div class="text-8xl mb-2 animate-float" style="animation-delay: 0.5s">🦞</div>
+                    <div class="inline-block bg-indigo-500 text-white text-xs px-2 py-1 rounded-full">📊</div>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-1">树大虾·策士</h3>
+                <p class="text-center text-gray-600 text-sm mb-4">策略分析师</p>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-xs">
+                        <span>策略</span>
+                        <span>95</span>
+                    </div>
+                    <div class="w-full bg-white rounded-full h-2">
+                        <div class="skill-bar h-2 rounded-full" style="width: 95%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between text-xs">
+                        <span>数据分析</span>
+                        <span>90</span>
+                    </div>
+                    <div class="w-full bg-white rounded-full h-2">
+                        <div class="skill-bar h-2 rounded-full" style="width: 90%"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <span class="text-xs bg-white px-3 py-1 rounded-full text-gray-600">冷静 · 理性 · 数据驱动</span>
+                </div>
+                
+                <p class="text-center text-sm text-gray-500 mt-3 italic">"从数据看..."</p>
+            </div>
+
+            <!-- 树大虾·创客 -->
+            <div class="agent-card bg-gradient-to-br from-pink-50 to-purple-100 rounded-2xl p-6"
+                 onclick="selectAgent('shrimp-creator')"
+                 id="card-shrimp-creator">
+                <div class="text-center mb-4">
+                    <div class="text-8xl mb-2 animate-float" style="animation-delay: 1s">🦑</div>
+                    <div class="inline-block bg-purple-500 text-white text-xs px-2 py-1 rounded-full">🎨</div>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-1">树大虾·创客</h3>
+                <p class="text-center text-gray-600 text-sm mb-4">创意设计师</p>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-xs">
+                        <span>设计</span>
+                        <span>90</span>
+                    </div>
+                    <div class="w-full bg-white rounded-full h-2">
+                        <div class="skill-bar h-2 rounded-full" style="width: 90%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between text-xs">
+                        <span>脑洞</span>
+                        <span>95</span>
+                    </div>
+                    <div class="w-full bg-white rounded-full h-2">
+                        <div class="skill-bar h-2 rounded-full" style="width: 95%"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <span class="text-xs bg-white px-3 py-1 rounded-full text-gray-600">跳跃 · 脑洞大 · 乐观</span>
+                </div>
+                
+                <p class="text-center text-sm text-gray-500 mt-3 italic">"我有个想法..."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 当前选中 Agent 详情 -->
+    <div class="max-w-4xl mx-auto px-4 pb-8">
+        <div id="agent-detail" class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="flex items-start space-x-6">
+                <div class="text-6xl">🦐</div>
+                <div class="flex-1">
+                    <h2 class="text-2xl font-bold mb-2" id="detail-name">树大虾</h2>
+                    <p class="text-gray-600 mb-4" id="detail-desc">你的代码工程师伙伴，擅长写代码、做自动化、解决技术问题。</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <h4 class="font-semibold text-sm text-gray-700 mb-2">专长领域</h4>
+                            <div class="flex flex-wrap gap-2" id="detail-skills">
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Python</span>
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">自动化</span>
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">GitHub</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm text-gray-700 mb-2">性格特点</h4>
+                            <div class="flex flex-wrap gap-2" id="detail-traits">
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">靠谱</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">细致</span>
+                                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">强迫症</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-sm text-gray-600 italic" id="detail-quote">"让我试试，这个应该能搞定。"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-center">
+                <button onclick="startChat()" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg transition-shadow">
+                    开始对话
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天界面（默认隐藏） -->
+    <div id="chat-interface" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 px-6 py-4 rounded-t-2xl flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl" id="chat-avatar">🦐</span>
+                    <div>
+                        <h3 class="text-white font-bold" id="chat-name">树大虾</h3>
+                        <p class="text-white/80 text-sm" id="chat-title">代码工程师</p>
+                    </div>
+                </div>
+                <button onclick="closeChat()" class="text-white/80 hover:text-white text-2xl">&times;</button>
+            </div>
+            
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[400px]">
+                <div class="flex items-start space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-xl flex-shrink-0" id="chat-agent-avatar">🦐</div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                        <p class="text-gray-800" id="chat-welcome">嗨！我是树大虾，你的代码工程师。有什么技术问题需要我帮忙吗？</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex space-x-2">
+                    <input type="text" id="chat-input" placeholder="输入消息..." 
+                           class="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button onclick="sendChatMessage()" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-medium">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agent 数据
+        const agents = {
+            'shrimp-coder': {
+                name: '树大虾',
+                title: '代码工程师',
+                emoji: '🦐',
+                accessory: '💻',
+                desc: '你的代码工程师伙伴，擅长写代码、做自动化、解决技术问题。说话直接靠谱，喜欢把复杂问题拆解成可执行的步骤。',
+                skills: ['Python', '自动化', 'GitHub', '调试'],
+                traits: ['靠谱', '细致', '强迫症', '夜猫子'],
+                quote: '"让我试试，这个应该能搞定。"'
+            },
+            'shrimp-strategist': {
+                name: '树大虾·策士',
+                title: '策略分析师', 
+                emoji: '🦞',
+                accessory: '📊',
+                desc: '你的策略分析师伙伴，擅长商业分析、数据洞察、决策建议。说话冷静理性，习惯用数据和逻辑支撑观点。',
+                skills: ['数据分析', '商业策略', '市场调研', '决策框架'],
+                traits: ['冷静', '理性', '数据驱动', '犀利'],
+                quote: '"从数据看，这个方案的成功率大约是65%，建议先做小规模验证。"'
+            },
+            'shrimp-creator': {
+                name: '树大虾·创客',
+                title: '创意设计师',
+                emoji: '🦑',
+                accessory: '🎨',
+                desc: '你的创意设计师伙伴，擅长内容创作、设计思维、头脑风暴。思维活跃，喜欢从不同角度思考问题。',
+                skills: ['内容创作', '视觉设计', '头脑风暴', '品牌策划'],
+                traits: ['跳跃', '脑洞大', '乐观', '尝鲜'],
+                quote: '"等等！我有个疯狂的想法，要不要听听看？"'
+            }
+        };
+
+        let currentAgent = 'shrimp-coder';
+
+        function selectAgent(agentId) {
+            currentAgent = agentId;
+            const agent = agents[agentId];
+            
+            // 更新卡片状态
+            document.querySelectorAll('.agent-card').forEach(card => {
+                card.classList.remove('active', 'ring-4', 'ring-blue-400');
+            });
+            document.getElementById(`card-${agentId}`).classList.add('active', 'ring-4', 'ring-blue-400');
+            
+            // 更新详情区
+            document.getElementById('detail-name').textContent = agent.name;
+            document.getElementById('detail-desc').textContent = agent.desc;
+            document.getElementById('detail-quote').textContent = agent.quote;
+            
+            // 更新专长标签
+            const skillsContainer = document.getElementById('detail-skills');
+            skillsContainer.innerHTML = agent.skills.map(s => 
+                `<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">${s}</span>`
+            ).join('');
+            
+            // 更新性格标签
+            const traitsContainer = document.getElementById('detail-traits');
+            traitsContainer.innerHTML = agent.traits.map(t => 
+                `<span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">${t}</span>`
+            ).join('');
+            
+            // 更新顶部状态
+            document.getElementById('active-agent-name').textContent = `当前：${agent.name}`;
+        }
+
+        function startChat() {
+            const agent = agents[currentAgent];
+            document.getElementById('chat-interface').classList.remove('hidden');
+            document.getElementById('chat-avatar').textContent = agent.emoji;
+            document.getElementById('chat-agent-avatar').textContent = agent.emoji;
+            document.getElementById('chat-name').textContent = agent.name;
+            document.getElementById('chat-title').textContent = agent.title;
+            document.getElementById('chat-welcome').textContent = 
+                `嗨！我是${agent.name}，你的${agent.title}。今天想聊点什么？`;
+        }
+
+        function closeChat() {
+            document.getElementById('chat-interface').classList.add('hidden');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            input.value = '';
+            
+            // 添加用户消息
+            const container = document.getElementById('chat-messages');
+            const userDiv = document.createElement('div');
+            userDiv.className = 'flex items-start space-x-3 justify-end';
+            userDiv.innerHTML = `
+                <div class="bg-blue-500 text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%]">
+                    <p>${message}</p>
+                </div>
+                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-xl flex-shrink-0">👤</div>
+            `;
+            container.appendChild(userDiv);
+            container.scrollTop = container.scrollHeight;
+            
+            // 模拟回复（实际应该调用API）
+            setTimeout(() => {
+                const agent = agents[currentAgent];
+                const replies = {
+                    'shrimp-coder': ['让我看看这个问题...', '可以用Python这样实现：', '需要我帮你写个脚本吗？'],
+                    'shrimp-strategist': ['从数据角度分析...', '建议先小规模验证', '这个决策的风险点是...'],
+                    'shrimp-creator': ['等等，我有个想法！', '不如试试这个角度？', '这样表达会不会更有趣？']
+                };
+                const randomReply = replies[currentAgent][Math.floor(Math.random() * 3)];
+                
+                const agentDiv = document.createElement('div');
+                agentDiv.className = 'flex items-start space-x-3';
+                agentDiv.innerHTML = `
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-xl flex-shrink-0">${agent.emoji}</div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                        <p class="text-gray-800">${randomReply} 🦐</p>
+                    </div>
+                `;
+                container.appendChild(agentDiv);
+                container.scrollTop = container.scrollHeight;
+            }, 1000);
+        }
+
+        // 点击遮罩关闭
+        document.getElementById('chat-interface').addEventListener('click', function(e) {
+            if (e.target === this) closeChat();
+        });
+    </script>
+</body>
+</html>
